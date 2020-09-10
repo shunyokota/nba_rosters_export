@@ -1,10 +1,12 @@
 const axios = require('axios');
 const _ = require('lodash');
+const fs = require('fs')
 const TEAM_LIST_URL = 'https://jp.global.nba.com/stats2/league/conferenceteamlist.json?locale=ja';
 const ROSTERS_URL = 'https://jp.global.nba.com/stats2/team/roster.json?locale=ja&teamCode=:code'
 const SCHEDULE_URL = 'https://jp.global.nba.com/stats2/team/schedule.json?countryCode=JP&locale=ja&teamCode=:code'
 const STATS_URL = 'https://jp.global.nba.com/stats2/player/stats.json?ds=profile&locale=ja&playerCode=:code'
 const {Roster} = require('./Roster')
+const {Game} = require('./Game')
 const ROSTER_START_ROW = 6
 
 var Excel = require('exceljs');
@@ -13,18 +15,22 @@ var workbook = new Excel.Workbook();
 const HISTORY_LEN = 5;
 const teamCode1 = process.argv[2];
 
+const getLogoImagePath = (abbr) => {
+  return `./img/logo/${abbr}_logo.png`
+}
 const teamList = async () => {
   const res = await axios.get(TEAM_LIST_URL);
-  console.log(_(res.data.payload.listGroups).flatMap('teams').value());
+  console.log(_(res.data.payload.listGroups).flatMap('teams').map('profile').map('abbr').value());
 }
 
 const rosterCodeList = async (code) => {
   const res = await axios.get(ROSTERS_URL.replace(':code', code));
   return _(res.data.payload.players).map('profile').map('code').value();
 }
-
-const scheduleList = async (code) => {
+let logImagePath = ''
+const gameList = async (code) => {
   const res = await axios.get(SCHEDULE_URL.replace(':code', code));
+  logImagePath = getLogoImagePath(res.data.payload.profile.abbr)
   return _(res.data.payload.monthGroups)
     .flatMap('games')
     .filter((game) => {
@@ -35,6 +41,9 @@ const scheduleList = async (code) => {
     })
     .reverse()
     .slice(0, HISTORY_LEN)
+    .map((game) => {
+      return new Game(game)
+    })
     .value()
 }
 
@@ -46,23 +55,50 @@ const statsList = async (code) => {
 }
 
 const main = async () => {
-  console.log(await scheduleList(teamCode1))
-  return
+  const games = await gameList(teamCode1)
+
   const rosterCodes = await rosterCodeList(teamCode1);
   //const rosters = []
 
-  const rosters = await Promise.all(rosterCodes.map(
+  let rosters = await Promise.all(rosterCodes.map(
     async code => {
       let roster = new Roster(code);
       await roster.init()
-      console.log(roster.seasonGames)
       return roster
     }
-    ))
+  ))
+  rosters = _(rosters).sortBy((roster) => {
+    const mins = roster.mins(games[0].gameId())
+    return !mins ? 0 : roster.mins(games[0].gameId())
+  }).reverse()
+    .values()
 
   workbook.xlsx.readFile('template.xlsx')
-    .then(function() {
+    .then(function () {
       var worksheet = workbook.getWorksheet(1);
+
+      const imageId = workbook.addImage({
+        buffer: fs.readFileSync(logImagePath),
+        extension: 'png',
+      });
+      worksheet.addImage(imageId, 'A1:B2');
+
+      //チーム名
+      let row = worksheet.getRow(1)
+      row.getCell(3).value = games[0].teamName()
+      row.commit()
+      //相手チーム
+
+      games.forEach((game, n) => {
+        let row = worksheet.getRow(4)
+        let col = 9 + 3 * n
+        row.getCell(col).value = game.displayScore()
+        row.commit()
+        row = worksheet.getRow(5)
+        row.getCell(col).value = game.oppTeamName()
+        row.commit()
+      })
+
       let rowNum = ROSTER_START_ROW;
       rosters.forEach((roster, i) => {
         let row = worksheet.getRow(i + ROSTER_START_ROW);
@@ -71,15 +107,23 @@ const main = async () => {
         row.getCell(4).value = roster.position();
         row.getCell(5).value = roster.height();
         row.getCell(6).value = roster.weight();
+        row.getCell(7).value = roster.dayOfBirth().format('YYYY/MM/DD');
+        row.getCell(8).value = roster.experienceYears();
+        //各選手・試合ごとの情報
+        games.forEach((game, n) => {
+          let col = 9 + 3 * n
+          //スコア
+          row.getCell(col).value = roster.points(game.gameId());
+          row.getCell(col + 1).value = roster.threePa(game.gameId());
+          row.getCell(col + 2).value = roster.threePm(game.gameId());
+        })
         row.commit();
       })
 
       return workbook.xlsx.writeFile('new.xlsx');
     })
-  //   rosterCodes.map(async code => {
-  //   return await statsList(code)
-  // });
-  //console.log(rosters);
+  await teamList()
+  //   rosterCodes.map(asyn
 }
 
 main();

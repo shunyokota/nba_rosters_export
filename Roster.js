@@ -1,4 +1,5 @@
 const axios = require('axios');
+const _ = require('lodash');
 const moment = require('moment');
 class Roster {
   constructor(code) {
@@ -37,6 +38,44 @@ class Roster {
 
   experienceYears() {
     return this.data.player.playerProfile.experience
+  }
+
+  gameInfo(gameId) {
+    return _.find(this.seasonGames, (game) => {
+      return game.profile.gameId == gameId
+    })
+  }
+
+  mins(gameId) {
+    const gameInfo = this.gameInfo(gameId)
+    if (!gameInfo) {
+      return null
+    }
+    return gameInfo.statTotal.mins
+  }
+
+  points(gameId) {
+    const gameInfo = this.gameInfo(gameId)
+    if (!gameInfo) {
+      return null
+    }
+    return gameInfo.statTotal.points
+  }
+
+  threePm(gameId) {
+    const gameInfo = this.gameInfo(gameId)
+    if (!gameInfo) {
+      return null
+    }
+    return gameInfo.statTotal.tpm
+  }
+
+  threePa(gameId) {
+    const gameInfo = this.gameInfo(gameId)
+    if (!gameInfo) {
+      return null
+    }
+    return gameInfo.statTotal.tpa
   }
 }
 
