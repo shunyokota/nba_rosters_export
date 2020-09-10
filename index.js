@@ -5,6 +5,10 @@ const ROSTERS_URL = 'https://jp.global.nba.com/stats2/team/roster.json?locale=ja
 const SCHEDULE_URL = 'https://jp.global.nba.com/stats2/team/schedule.json?countryCode=JP&locale=ja&teamCode=:code'
 const STATS_URL = 'https://jp.global.nba.com/stats2/player/stats.json?ds=profile&locale=ja&playerCode=:code'
 const {Roster} = require('./Roster')
+const ROSTER_START_ROW = 6
+
+var Excel = require('exceljs');
+var workbook = new Excel.Workbook();
 
 const HISTORY_LEN = 5;
 const teamCode1 = process.argv[2];
@@ -42,6 +46,8 @@ const statsList = async (code) => {
 }
 
 const main = async () => {
+  console.log(await scheduleList(teamCode1))
+  return
   const rosterCodes = await rosterCodeList(teamCode1);
   //const rosters = []
 
@@ -49,18 +55,32 @@ const main = async () => {
     async code => {
       let roster = new Roster(code);
       await roster.init()
+      console.log(roster.seasonGames)
       return roster
     }
-    )
-  )
+    ))
+
+  workbook.xlsx.readFile('template.xlsx')
+    .then(function() {
+      var worksheet = workbook.getWorksheet(1);
+      let rowNum = ROSTER_START_ROW;
+      rosters.forEach((roster, i) => {
+        let row = worksheet.getRow(i + ROSTER_START_ROW);
+        row.getCell(2).value = roster.jerseyNo();
+        row.getCell(3).value = roster.displayName();
+        row.getCell(4).value = roster.position();
+        row.getCell(5).value = roster.height();
+        row.getCell(6).value = roster.weight();
+        row.commit();
+      })
+
+      return workbook.xlsx.writeFile('new.xlsx');
+    })
   //   rosterCodes.map(async code => {
   //   return await statsList(code)
   // });
-  console.log(rosters);
+  //console.log(rosters);
 }
 
 main();
-//console.log(rosterCodeList(teamCode1));
-//console.log();
-//console.log(Roster)
-//console.log(statsList('marcus_morris'));
+
