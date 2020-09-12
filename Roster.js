@@ -77,6 +77,14 @@ class Roster {
     }
     return gameInfo.statTotal.tpa
   }
+
+  isOnCourt(gameId) {
+    const gameInfo = this.gameInfo(gameId)
+    if (!gameInfo) {
+      return null
+    }
+    return gameInfo.statTotal.tpa
+  }
 }
 
 module.exports = {

@@ -14,6 +14,7 @@ var workbook = new Excel.Workbook();
 
 const HISTORY_LEN = 5;
 const teamCode1 = process.argv[2];
+const teamCode2 = process.argv[3];
 
 const getLogoImagePath = (abbr) => {
   return `./img/logo/${abbr}_logo.png`
@@ -54,11 +55,10 @@ const statsList = async (code) => {
     .value()
 }
 
-const main = async () => {
-  const games = await gameList(teamCode1)
+const writeToSheet = async (teamCode, worksheet, workbook) => {
+  const games = await gameList(teamCode)
 
-  const rosterCodes = await rosterCodeList(teamCode1);
-  //const rosters = []
+  const rosterCodes = await rosterCodeList(teamCode);
 
   let rosters = await Promise.all(rosterCodes.map(
     async code => {
@@ -73,52 +73,63 @@ const main = async () => {
   }).reverse()
     .values()
 
-  workbook.xlsx.readFile('template.xlsx')
-    .then(function () {
-      var worksheet = workbook.getWorksheet(1);
+  const imageId = workbook.addImage({
+    buffer: fs.readFileSync(logImagePath),
+    extension: 'png',
+  });
+  worksheet.addImage(imageId, 'A1:B2');
 
-      const imageId = workbook.addImage({
-        buffer: fs.readFileSync(logImagePath),
-        extension: 'png',
-      });
-      worksheet.addImage(imageId, 'A1:B2');
+  //チーム名
+  let row = worksheet.getRow(1)
+  row.getCell(3).value = games[0].teamName()
+  row.commit()
+  //相手チーム
 
-      //チーム名
-      let row = worksheet.getRow(1)
-      row.getCell(3).value = games[0].teamName()
-      row.commit()
-      //相手チーム
+  games.forEach((game, n) => {
+    let row = worksheet.getRow(4)
+    let col = 9 + 3 * n
+    row.getCell(col).value = game.displayScore()
+    row.commit()
+    row = worksheet.getRow(5)
+    row.getCell(col).value = game.oppTeamName()
+    row.commit()
+  })
 
-      games.forEach((game, n) => {
-        let row = worksheet.getRow(4)
-        let col = 9 + 3 * n
-        row.getCell(col).value = game.displayScore()
-        row.commit()
-        row = worksheet.getRow(5)
-        row.getCell(col).value = game.oppTeamName()
-        row.commit()
-      })
+  let rowNum = ROSTER_START_ROW;
+  let strongStyle = wb.createStyle({
+    font: {
+      bold: true,
+      underline: true,
+    },
+  });
+  rosters.forEach((roster, i) => {
+    let row = worksheet.getRow(i + ROSTER_START_ROW);
+    row.getCell(2).value = roster.jerseyNo();
+    row.getCell(3).value = roster.displayName();
+    row.getCell(3).style =
+    row.getCell(4).value = roster.position();
+    row.getCell(5).value = roster.height();
+    row.getCell(6).value = roster.weight();
+    row.getCell(7).value = roster.dayOfBirth().format('YYYY/MM/DD');
+    row.getCell(8).value = roster.experienceYears();
+    //各選手・試合ごとの情報
+    games.forEach((game, n) => {
+      let col = 9 + 3 * n
+      //スコア
+      row.getCell(col).value = roster.points(game.gameId());
+      row.getCell(col + 1).value = roster.threePa(game.gameId());
+      row.getCell(col + 2).value = roster.threePm(game.gameId());
+    })
+    row.commit();
+  })
+}
 
-      let rowNum = ROSTER_START_ROW;
-      rosters.forEach((roster, i) => {
-        let row = worksheet.getRow(i + ROSTER_START_ROW);
-        row.getCell(2).value = roster.jerseyNo();
-        row.getCell(3).value = roster.displayName();
-        row.getCell(4).value = roster.position();
-        row.getCell(5).value = roster.height();
-        row.getCell(6).value = roster.weight();
-        row.getCell(7).value = roster.dayOfBirth().format('YYYY/MM/DD');
-        row.getCell(8).value = roster.experienceYears();
-        //各選手・試合ごとの情報
-        games.forEach((game, n) => {
-          let col = 9 + 3 * n
-          //スコア
-          row.getCell(col).value = roster.points(game.gameId());
-          row.getCell(col + 1).value = roster.threePa(game.gameId());
-          row.getCell(col + 2).value = roster.threePm(game.gameId());
-        })
-        row.commit();
-      })
+const main = async () => {
+
+  await workbook.xlsx.readFile('template.xlsx')
+    .then(async function () {
+      await writeToSheet(teamCode1, workbook.getWorksheet(1), workbook)
+      await writeToSheet(teamCode2, workbook.getWorksheet(2), workbook)
 
       return workbook.xlsx.writeFile('new.xlsx');
     })
