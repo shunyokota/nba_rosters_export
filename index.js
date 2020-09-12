@@ -76,11 +76,13 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
   }).reverse()
     .values()
 
-  const imageId = workbook.addImage({
-    buffer: fs.readFileSync(logImagePath),
-    extension: 'png',
-  });
-  worksheet.addImage(imageId, 'A1:B2');
+  try {
+    const imageId = workbook.addImage({
+      buffer: fs.readFileSync(logImagePath),
+      extension: 'png',
+    });
+    worksheet.addImage(imageId, 'A1:B2');
+  } catch {}
 
   //チーム名
   let row = worksheet.getRow(1)
