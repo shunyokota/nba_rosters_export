@@ -4,6 +4,12 @@ class Game {
   constructor(data) {
     this.data = data
   }
+  async init() {
+    const url = 'https://jp.global.nba.com/stats2/game/snapshot.json?countryCode=JP&gameId=:id&locale=ja'.replace(':id', this.gameId())
+    const res = await axios.get(url);
+    this.snapshotData = res.data.payload
+    //console.log(this.snapshotData)
+  }
 
   gameId() {
     return this.data.profile.gameId
@@ -38,6 +44,17 @@ class Game {
   displayScore() {
     let score = this.data.teamScore + '-' + this.data.oppTeamScore
     return (this.isWon() ? '○' : '●') + score
+  }
+
+  onCourtRosterCodes() {
+    console.log(this.gameId())
+    console.log(this.snapshotData)
+    const players = this.snapshotData.homeTeam.gamePlayers.concat(this.snapshotData.awayTeam.gamePlayers)
+    return players.filter((player) => {
+      return player.boxscore.onCourt == 'true'
+    }).map((player) => {
+      return player.profile.code
+    })
   }
 
 }

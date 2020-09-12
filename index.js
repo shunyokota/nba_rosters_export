@@ -32,25 +32,26 @@ let logImagePath = ''
 const gameList = async (code) => {
   const res = await axios.get(SCHEDULE_URL.replace(':code', code));
   logImagePath = getLogoImagePath(res.data.payload.profile.abbr)
-  return _(res.data.payload.monthGroups)
+  const games = _(res.data.payload.monthGroups)
     .flatMap('games')
     .filter((game) => {
       return game.winOrLoss !== null;
     })
     .sortBy((game) => {
       return game.profile.dateTimeEt
+      return game.profile.dateTimeEt
     })
     .reverse()
     .slice(0, HISTORY_LEN)
-    .map((game) => {
-      return new Game(game)
+    .map((gameRaw) => {
+      return new Game(gameRaw)
     })
     .value()
+  return games
 }
 
 const statsList = async (code) => {
   const res = await axios.get(STATS_URL.replace(':code', code));
-  console.log(res.data.payload);
   return _(res)
     .value()
 }
@@ -58,6 +59,9 @@ const statsList = async (code) => {
 const writeToSheet = async (teamCode, worksheet, workbook) => {
   const games = await gameList(teamCode)
 
+  for (let i = 0; i < games.length; i++) {
+    await games[i].init();
+  }
   const rosterCodes = await rosterCodeList(teamCode);
 
   let rosters = await Promise.all(rosterCodes.map(
@@ -96,17 +100,20 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
   })
 
   let rowNum = ROSTER_START_ROW;
-  let strongStyle = wb.createStyle({
-    font: {
-      bold: true,
-      underline: true,
-    },
-  });
   rosters.forEach((roster, i) => {
     let row = worksheet.getRow(i + ROSTER_START_ROW);
+    if (i == 0 ) {
+
+      console.log(i)
+      worksheet.getCell('A1').fill = {
+          type: 'pattern',
+          pattern:'darkVertical',
+          fgColor:{argb:'FFFF0000'}
+        };
+
+    }
     row.getCell(2).value = roster.jerseyNo();
     row.getCell(3).value = roster.displayName();
-    row.getCell(3).style =
     row.getCell(4).value = roster.position();
     row.getCell(5).value = roster.height();
     row.getCell(6).value = roster.weight();
@@ -116,7 +123,11 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
     games.forEach((game, n) => {
       let col = 9 + 3 * n
       //スコア
-      row.getCell(col).value = roster.points(game.gameId());
+      let point = roster.points(game.gameId())
+      if (_.includes(game.onCourtRosterCodes(), roster.code)) {
+        point = '☆' + point
+      }
+      row.getCell(col).value = point
       row.getCell(col + 1).value = roster.threePa(game.gameId());
       row.getCell(col + 2).value = roster.threePm(game.gameId());
     })
