@@ -1,0 +1,595 @@
+{
+  "context": {
+    "user": {
+      "countryCode": "--",
+      "countryName": "None",
+      "locale": "ja",
+      "timeZone": "+09:00",
+      "timeZoneCity": "Asia/Yakutsk"
+    },
+    "device": {
+      "clazz": null
+    }
+  },
+  "error": {
+    "detail": null,
+    "isError": "false",
+    "message": null
+  },
+  "payload": {
+    "league": {
+      "id": "00",
+      "name": "NBA"
+    },
+    "season": {
+      "isCurrent": "true",
+      "rosterSeasonType": 4,
+      "rosterSeasonYear": "2019",
+      "rosterSeasonYearDisplay": "2019-2020",
+      "scheduleSeasonType": 4,
+      "scheduleSeasonYear": "2019",
+      "scheduleYearDisplay": "2019-2020",
+      "statsSeasonType": 4,
+      "statsSeasonYear": "2019",
+      "statsSeasonYearDisplay": "2019-2020",
+      "year": "2019",
+      "yearDisplay": "2019-2020"
+    },
+    "listGroups": [
+      {
+        "teams": [
+          {
+            "profile": {
+              "abbr": "ATL",
+              "city": "アトランタ",
+              "cityEn": "Atlanta",
+              "code": "hawks",
+              "conference": "Eastern",
+              "displayAbbr": "ATL",
+              "displayConference": "イースタン",
+              "division": "サウスイースト",
+              "id": "1610612737",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ホークス",
+              "nameEn": "Hawks"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "BOS",
+              "city": "ボストン",
+              "cityEn": "Boston",
+              "code": "celtics",
+              "conference": "Eastern",
+              "displayAbbr": "BOS",
+              "displayConference": "イースタン",
+              "division": "アトランティック",
+              "id": "1610612738",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "セルティックス",
+              "nameEn": "Celtics"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "BKN",
+              "city": "ブルックリン",
+              "cityEn": "Brooklyn",
+              "code": "nets",
+              "conference": "Eastern",
+              "displayAbbr": "BKN",
+              "displayConference": "イースタン",
+              "division": "アトランティック",
+              "id": "1610612751",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ネッツ",
+              "nameEn": "Nets"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "CHA",
+              "city": "シャーロット",
+              "cityEn": "Charlotte",
+              "code": "hornets",
+              "conference": "Eastern",
+              "displayAbbr": "CHA",
+              "displayConference": "イースタン",
+              "division": "サウスイースト",
+              "id": "1610612766",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ホーネッツ",
+              "nameEn": "Hornets"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "CHI",
+              "city": "シカゴ",
+              "cityEn": "Chicago",
+              "code": "bulls",
+              "conference": "Eastern",
+              "displayAbbr": "CHI",
+              "displayConference": "イースタン",
+              "division": "セントラル",
+              "id": "1610612741",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ブルズ",
+              "nameEn": "Bulls"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "CLE",
+              "city": "クリーブランド",
+              "cityEn": "Cleveland",
+              "code": "cavaliers",
+              "conference": "Eastern",
+              "displayAbbr": "CLE",
+              "displayConference": "イースタン",
+              "division": "セントラル",
+              "id": "1610612739",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "キャバリアーズ",
+              "nameEn": "Cavaliers"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "DET",
+              "city": "デトロイト",
+              "cityEn": "Detroit",
+              "code": "pistons",
+              "conference": "Eastern",
+              "displayAbbr": "DET",
+              "displayConference": "イースタン",
+              "division": "セントラル",
+              "id": "1610612765",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ピストンズ",
+              "nameEn": "Pistons"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "IND",
+              "city": "インディアナ",
+              "cityEn": "Indiana",
+              "code": "pacers",
+              "conference": "Eastern",
+              "displayAbbr": "IND",
+              "displayConference": "イースタン",
+              "division": "セントラル",
+              "id": "1610612754",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ペイサーズ",
+              "nameEn": "Pacers"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "MIA",
+              "city": "マイアミ",
+              "cityEn": "Miami",
+              "code": "heat",
+              "conference": "Eastern",
+              "displayAbbr": "MIA",
+              "displayConference": "イースタン",
+              "division": "サウスイースト",
+              "id": "1610612748",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ヒート",
+              "nameEn": "Heat"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "MIL",
+              "city": "ミルウォーキー",
+              "cityEn": "Milwaukee",
+              "code": "bucks",
+              "conference": "Eastern",
+              "displayAbbr": "MIL",
+              "displayConference": "イースタン",
+              "division": "セントラル",
+              "id": "1610612749",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "バックス",
+              "nameEn": "Bucks"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "NYK",
+              "city": "ニューヨーク",
+              "cityEn": "New York",
+              "code": "knicks",
+              "conference": "Eastern",
+              "displayAbbr": "NYK",
+              "displayConference": "イースタン",
+              "division": "アトランティック",
+              "id": "1610612752",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ニックス",
+              "nameEn": "Knicks"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "ORL",
+              "city": "オーランド",
+              "cityEn": "Orlando",
+              "code": "magic",
+              "conference": "Eastern",
+              "displayAbbr": "ORL",
+              "displayConference": "イースタン",
+              "division": "サウスイースト",
+              "id": "1610612753",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "マジック",
+              "nameEn": "Magic"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "PHI",
+              "city": "フィラデルフィア",
+              "cityEn": "Philadelphia",
+              "code": "sixers",
+              "conference": "Eastern",
+              "displayAbbr": "PHI",
+              "displayConference": "イースタン",
+              "division": "アトランティック",
+              "id": "1610612755",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "76ers",
+              "nameEn": "76ers"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "TOR",
+              "city": "トロント",
+              "cityEn": "Toronto",
+              "code": "raptors",
+              "conference": "Eastern",
+              "displayAbbr": "TOR",
+              "displayConference": "イースタン",
+              "division": "アトランティック",
+              "id": "1610612761",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ラプターズ",
+              "nameEn": "Raptors"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "WAS",
+              "city": "ワシントン",
+              "cityEn": "Washington",
+              "code": "wizards",
+              "conference": "Eastern",
+              "displayAbbr": "WAS",
+              "displayConference": "イースタン",
+              "division": "サウスイースト",
+              "id": "1610612764",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ウィザーズ",
+              "nameEn": "Wizards"
+            }
+          }
+        ],
+        "conference": "Eastern",
+        "division": null
+      },
+      {
+        "teams": [
+          {
+            "profile": {
+              "abbr": "DAL",
+              "city": "ダラス",
+              "cityEn": "Dallas",
+              "code": "mavericks",
+              "conference": "Western",
+              "displayAbbr": "DAL",
+              "displayConference": "ウェスタン",
+              "division": "サウスウェスト",
+              "id": "1610612742",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "マーベリックス",
+              "nameEn": "Mavericks"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "DEN",
+              "city": "デンバー",
+              "cityEn": "Denver",
+              "code": "nuggets",
+              "conference": "Western",
+              "displayAbbr": "DEN",
+              "displayConference": "ウェスタン",
+              "division": "ノースウェスト",
+              "id": "1610612743",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ナゲッツ",
+              "nameEn": "Nuggets"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "GSW",
+              "city": "ゴールデンステイト",
+              "cityEn": "Golden State",
+              "code": "warriors",
+              "conference": "Western",
+              "displayAbbr": "GSW",
+              "displayConference": "ウェスタン",
+              "division": "パシフィック",
+              "id": "1610612744",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ウォリアーズ",
+              "nameEn": "Warriors"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "HOU",
+              "city": "ヒューストン",
+              "cityEn": "Houston",
+              "code": "rockets",
+              "conference": "Western",
+              "displayAbbr": "HOU",
+              "displayConference": "ウェスタン",
+              "division": "サウスウェスト",
+              "id": "1610612745",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ロケッツ",
+              "nameEn": "Rockets"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "LAC",
+              "city": "LA",
+              "cityEn": "LA",
+              "code": "clippers",
+              "conference": "Western",
+              "displayAbbr": "LAC",
+              "displayConference": "ウェスタン",
+              "division": "パシフィック",
+              "id": "1610612746",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "クリッパーズ",
+              "nameEn": "Clippers"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "LAL",
+              "city": "ロサンゼルス",
+              "cityEn": "Los Angeles",
+              "code": "lakers",
+              "conference": "Western",
+              "displayAbbr": "LAL",
+              "displayConference": "ウェスタン",
+              "division": "パシフィック",
+              "id": "1610612747",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "レイカーズ",
+              "nameEn": "Lakers"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "MEM",
+              "city": "メンフィス",
+              "cityEn": "Memphis",
+              "code": "grizzlies",
+              "conference": "Western",
+              "displayAbbr": "MEM",
+              "displayConference": "ウェスタン",
+              "division": "サウスウェスト",
+              "id": "1610612763",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "グリズリーズ",
+              "nameEn": "Grizzlies"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "MIN",
+              "city": "ミネソタ",
+              "cityEn": "Minnesota",
+              "code": "timberwolves",
+              "conference": "Western",
+              "displayAbbr": "MIN",
+              "displayConference": "ウェスタン",
+              "division": "ノースウェスト",
+              "id": "1610612750",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ティンバーウルブズ",
+              "nameEn": "Timberwolves"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "NOP",
+              "city": "ニューオーリンズ",
+              "cityEn": "New Orleans",
+              "code": "pelicans",
+              "conference": "Western",
+              "displayAbbr": "NOP",
+              "displayConference": "ウェスタン",
+              "division": "サウスウェスト",
+              "id": "1610612740",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ペリカンズ",
+              "nameEn": "Pelicans"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "OKC",
+              "city": "オクラホマシティ",
+              "cityEn": "Oklahoma City",
+              "code": "thunder",
+              "conference": "Western",
+              "displayAbbr": "OKC",
+              "displayConference": "ウェスタン",
+              "division": "ノースウェスト",
+              "id": "1610612760",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "サンダー",
+              "nameEn": "Thunder"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "PHX",
+              "city": "フェニックス",
+              "cityEn": "Phoenix",
+              "code": "suns",
+              "conference": "Western",
+              "displayAbbr": "PHX",
+              "displayConference": "ウェスタン",
+              "division": "パシフィック",
+              "id": "1610612756",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "サンズ",
+              "nameEn": "Suns"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "POR",
+              "city": "ポートランド",
+              "cityEn": "Portland",
+              "code": "blazers",
+              "conference": "Western",
+              "displayAbbr": "POR",
+              "displayConference": "ウェスタン",
+              "division": "ノースウェスト",
+              "id": "1610612757",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "トレイルブレイザーズ",
+              "nameEn": "Trail Blazers"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "SAC",
+              "city": "サクラメント",
+              "cityEn": "Sacramento",
+              "code": "kings",
+              "conference": "Western",
+              "displayAbbr": "SAC",
+              "displayConference": "ウェスタン",
+              "division": "パシフィック",
+              "id": "1610612758",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "キングス",
+              "nameEn": "Kings"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "SAS",
+              "city": "サンアントニオ",
+              "cityEn": "San Antonio",
+              "code": "spurs",
+              "conference": "Western",
+              "displayAbbr": "SAS",
+              "displayConference": "ウェスタン",
+              "division": "サウスウェスト",
+              "id": "1610612759",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "スパーズ",
+              "nameEn": "Spurs"
+            }
+          },
+          {
+            "profile": {
+              "abbr": "UTA",
+              "city": "ユタ",
+              "cityEn": "Utah",
+              "code": "jazz",
+              "conference": "Western",
+              "displayAbbr": "UTA",
+              "displayConference": "ウェスタン",
+              "division": "ノースウェスト",
+              "id": "1610612762",
+              "isAllStarTeam": false,
+              "isLeagueTeam": true,
+              "leagueId": "00",
+              "name": "ジャズ",
+              "nameEn": "Jazz"
+            }
+          }
+        ],
+        "conference": "Western",
+        "division": null
+      }
+    ],
+    "grouping": "conference"
+  },
+  "timestamp": "1599890161401"
+}

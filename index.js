@@ -13,15 +13,14 @@ var Excel = require('exceljs');
 var workbook = new Excel.Workbook();
 
 const HISTORY_LEN = 5;
-const teamCode1 = process.argv[2];
-const teamCode2 = process.argv[3];
 
 const getLogoImagePath = (abbr) => {
   return `./img/logo/${abbr}_logo.png`
 }
 const teamList = async () => {
   const res = await axios.get(TEAM_LIST_URL);
-  console.log(_(res.data.payload.listGroups).flatMap('teams').map('profile').map('abbr').value());
+  return _(res.data.payload.listGroups).flatMap('teams').map('profile').value();
+  //console.log(_(res.data.payload.listGroups).flatMap('teams').map('profile').map('abbr').value());
 }
 
 const rosterCodeList = async (code) => {
@@ -135,7 +134,7 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
   })
 }
 
-const main = async () => {
+const main = async (teamCode1, teamCode2) => {
 
   await workbook.xlsx.readFile('template.xlsx')
     .then(async function () {
@@ -148,5 +147,8 @@ const main = async () => {
   //   rosterCodes.map(asyn
 }
 
-main();
+//main(process.argv[2], process.argv[3]);
+module.exports = {
+  main, teamList
+}
 
