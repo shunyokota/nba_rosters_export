@@ -1,16 +1,10 @@
-
 const { main, teamList } = require('./index.js')
-
-// console.log(require('electron').remote)
-// const {app} = window.require('electron').remote
-// const path = require('path')
 
 //html内の要素取得とリスナーの設定
 document.querySelector("#execute").addEventListener('click', () => {
   convert();
 })
 
-//window.Vue = require('vue');
 const mainVue = new Vue(
   {
     el: '#main',
@@ -42,21 +36,4 @@ function convert() {
     console.log(e)
     alert('エラーが発生しました。')
   })
-  // const win = BrowserWindow.getFocusedWindow();
-  // fetchHolidays().then(() => {
-  //   return dialog.showOpenDialog(
-  //     win,
-  //     {
-  //       properties: ['openFile'],
-  //       filters: [
-  //         {
-  //           name: 'Document',
-  //           extensions: ['csv', 'txt']
-  //         }
-  //       ]
-  //     }
-  //   )
-  // }).then(result => {
-  //   executeCsvConvert(result.filePaths[0]); //複数選択の可能性もあるので配列となる。
-  // })
 }

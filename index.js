@@ -9,10 +9,6 @@ const STATS_URL = 'https://jp.global.nba.com/stats2/player/stats.json?ds=profile
 const {Roster} = require('./Roster')
 const {Game} = require('./Game')
 const ROSTER_START_ROW = 6
-//
-// const {app} = window.require('electron').remote
-// const path = window.require('path')
-///const {app} = require('electron')
 
 var Excel = require('exceljs');
 var workbook = new Excel.Workbook();
