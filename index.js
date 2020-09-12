@@ -1,6 +1,7 @@
 const axios = require('axios');
 const _ = require('lodash');
 const fs = require('fs')
+const moment = require('moment');
 const TEAM_LIST_URL = 'https://jp.global.nba.com/stats2/league/conferenceteamlist.json?locale=ja';
 const ROSTERS_URL = 'https://jp.global.nba.com/stats2/team/roster.json?locale=ja&teamCode=:code'
 const SCHEDULE_URL = 'https://jp.global.nba.com/stats2/team/schedule.json?countryCode=JP&locale=ja&teamCode=:code'
@@ -8,6 +9,10 @@ const STATS_URL = 'https://jp.global.nba.com/stats2/player/stats.json?ds=profile
 const {Roster} = require('./Roster')
 const {Game} = require('./Game')
 const ROSTER_START_ROW = 6
+//
+// const {app} = window.require('electron').remote
+// const path = window.require('path')
+///const {app} = require('electron')
 
 var Excel = require('exceljs');
 var workbook = new Excel.Workbook();
@@ -20,7 +25,6 @@ const getLogoImagePath = (abbr) => {
 const teamList = async () => {
   const res = await axios.get(TEAM_LIST_URL);
   return _(res.data.payload.listGroups).flatMap('teams').map('profile').value();
-  //console.log(_(res.data.payload.listGroups).flatMap('teams').map('profile').map('abbr').value());
 }
 
 const rosterCodeList = async (code) => {
@@ -101,16 +105,6 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
   let rowNum = ROSTER_START_ROW;
   rosters.forEach((roster, i) => {
     let row = worksheet.getRow(i + ROSTER_START_ROW);
-    if (i == 0 ) {
-
-      console.log(i)
-      worksheet.getCell('A1').fill = {
-          type: 'pattern',
-          pattern:'darkVertical',
-          fgColor:{argb:'FFFF0000'}
-        };
-
-    }
     row.getCell(2).value = roster.jerseyNo();
     row.getCell(3).value = roster.displayName();
     row.getCell(4).value = roster.position();
@@ -141,7 +135,12 @@ const main = async (teamCode1, teamCode2) => {
       await writeToSheet(teamCode1, workbook.getWorksheet(1), workbook)
       await writeToSheet(teamCode2, workbook.getWorksheet(2), workbook)
 
-      return workbook.xlsx.writeFile('new.xlsx');
+      const fileName = 'NBA_' + moment().format('YYYYMMDDHHmmss') + '.xlsx'
+      const path = require('path')
+      const { app } = window.require('electron').remote
+      const outputPath = path.join(app.getPath('desktop'), fileName)
+      //console.log(app.getPath('desktop'));
+      return workbook.xlsx.writeFile(outputPath);
     })
   await teamList()
   //   rosterCodes.map(asyn

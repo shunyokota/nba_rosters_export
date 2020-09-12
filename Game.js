@@ -32,13 +32,13 @@ class Game {
   }
 
   teamName() {
-    let oppTeam = this.isHome() ? this.data.homeTeam : this.data.awayTeam
-    return oppTeam.profile.name
+    let team = this.isHome() ? this.data.homeTeam : this.data.awayTeam
+    return team.profile.city + ' ' + team.profile.name
   }
 
   oppTeamName() {
-    let oppTeam = this.isHome() ? this.data.awayTeam : this.data.homeTeam
-    return oppTeam.profile.name
+    let team = this.isHome() ? this.data.awayTeam : this.data.homeTeam
+    return team.profile.city + ' ' + team.profile.name
   }
 
   displayScore() {

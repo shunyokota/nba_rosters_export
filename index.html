@@ -2,10 +2,27 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <button id="execute" class="button is-primary">ファイル選択</button>
+    <!--    <meta http-equiv="Content-Security-Policy" content="script-src 'self'">-->
+    <script src="./vue.min.js"></script>
+    <link rel="stylesheet" href="bulma.min.css"/>
 </head>
 <body>
-Hello World!
+
+<div class="container">
+    <section class="hero">
+        <div class="hero-body">
+            <button id="execute" class="button is-primary">ファイル出力</button>
+            <main id="main">
+                <div v-for="team in teams">
+                    <label>
+                        <input type="checkbox" v-model="selected_teams" :value="team.code"/>
+                        {{team.city}}&nbsp;{{team.name}}
+                    </label>
+                </div>
+            </main>
+        </div>
+    </section>
+</div>
 <script src="./events.js"></script>
 </body>
 </html>

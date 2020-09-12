@@ -1,19 +1,47 @@
-//const { BrowserWindow, dialog } = require('electron').remote;
-// const { executeCsvConvert } = require('./convert/index.js')
-// const { fetchHolidays } = require('./convert/holiday')
+
 const { main, teamList } = require('./index.js')
+
+// console.log(require('electron').remote)
+// const {app} = window.require('electron').remote
+// const path = require('path')
 
 //html内の要素取得とリスナーの設定
 document.querySelector("#execute").addEventListener('click', () => {
   convert();
 })
 
-const preview = document.getElementById('preview');
+//window.Vue = require('vue');
+const mainVue = new Vue(
+  {
+    el: '#main',
+    data: {
+      teams: [],
+      test: 'aa',
+      selected_teams: []
+    },
+    created: function() {
+      teamList().then((teams) => {
+        this.teams = teams
+      })
+    }
+  }
+)
 
 
 //openFileボタンが押されたとき（ファイル名取得まで）
 function convert() {
-  main('clippers', 'nuggets')
+  if (mainVue.selected_teams.length != 2) {
+    console.log(mainVue)
+    alert('チームを２つ選択してください。')
+    return
+  }
+
+  main(mainVue.selected_teams[0], mainVue.selected_teams[1]).then(() => {
+    alert('ファイルを出力しました。')
+  }).catch((e) => {
+    console.log(e)
+    alert('エラーが発生しました。')
+  })
   // const win = BrowserWindow.getFocusedWindow();
   // fetchHolidays().then(() => {
   //   return dialog.showOpenDialog(

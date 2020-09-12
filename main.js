@@ -6,10 +6,13 @@ let mainWindow = null;
 app.on('ready', () => {
   // mainWindowを作成（windowの大きさや、Kioskモードにするかどうかなどもここで定義できる）
   mainWindow = new BrowserWindow({
-    width: 400,
-    height: 300,
+    width: 800,
+    height: 600,
     webPreferences: {
       nodeIntegration: true, // <--- flag
+      worldSafeExecuteJavaScript: true,
+      enableRemoteModule: true,
+      nodeIntegrationInWorker: true // <---  for web workers
     }
   });
   // Electronに表示するhtmlを絶対パスで指定（相対パスだと動かない）
