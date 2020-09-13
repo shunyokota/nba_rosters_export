@@ -1,21 +1,45 @@
 {
-  "name": "nba",
+  "name": "NBA_Rosters_Export",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node index.js"
+    "test": "node scripts/index.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "nba.excel.export",
+    "files": [
+      "main.js",
+      "index.html",
+      "scripts/*",
+      "lib/*",
+      "img/logo/*",
+      "template.xlsx",
+      "dist/electron/**/*",
+      "dist/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    }
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.20.0",
-    "electron": "^10.1.1",
     "exceljs": "^4.1.1",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "vue": "^2.6.12",
     "xlsx": "^0.16.6"
+  },
+  "devDependencies": {
+    "electron": "^10.1.1",
+    "electron-builder": "^22.8.0"
   }
 }

@@ -9,6 +9,7 @@ const STATS_URL = 'https://jp.global.nba.com/stats2/player/stats.json?ds=profile
 const {Roster} = require('./Roster')
 const {Game} = require('./Game')
 const ROSTER_START_ROW = 6
+const path = require('path')
 
 var Excel = require('exceljs');
 var workbook = new Excel.Workbook();
@@ -16,7 +17,7 @@ var workbook = new Excel.Workbook();
 const HISTORY_LEN = 5;
 
 const getLogoImagePath = (abbr) => {
-  return `./img/logo/${abbr}_logo.png`
+  return path.join(__dirname, `../img/logo/${abbr}_logo.png`) //`./img/logo/${abbr}_logo.png`
 }
 const teamList = async () => {
   const res = await axios.get(TEAM_LIST_URL);
@@ -63,13 +64,19 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
   }
   const rosterCodes = await rosterCodeList(teamCode);
 
-  let rosters = await Promise.all(rosterCodes.map(
-    async code => {
-      let roster = new Roster(code);
-      await roster.init()
-      return roster
-    }
-  ))
+  let rosters = []
+  for (let i = 0; i < rosterCodes.length; i++) {
+    let roster = new Roster(rosterCodes[i]);
+    await roster.init()
+    rosters.push(roster)
+  }
+  // let rosters = await Promise.all(rosterCodes.map(
+  //   async code => {
+  //     let roster = new Roster(code);
+  //     await roster.init()
+  //     return roster
+  //   }
+  // ))
   rosters = _(rosters).sortBy((roster) => {
     const mins = roster.mins(games[0].gameId())
     return !mins ? 0 : roster.mins(games[0].gameId())
@@ -127,15 +134,14 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
 }
 
 const main = async (teamCode1, teamCode2) => {
+  const { app } = window.require('electron').remote
 
-  await workbook.xlsx.readFile('template.xlsx')
+  await workbook.xlsx.readFile(path.join(__dirname, '../template.xlsx'))
     .then(async function () {
       await writeToSheet(teamCode1, workbook.getWorksheet(1), workbook)
       await writeToSheet(teamCode2, workbook.getWorksheet(2), workbook)
 
       const fileName = 'NBA_' + moment().format('YYYYMMDDHHmmss') + '.xlsx'
-      const path = require('path')
-      const { app } = window.require('electron').remote
       const outputPath = path.join(app.getPath('desktop'), fileName)
       //console.log(app.getPath('desktop'));
       return workbook.xlsx.writeFile(outputPath);

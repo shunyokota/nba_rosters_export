@@ -1,4 +1,4 @@
-const { main, teamList } = require('./index.js')
+const { main, teamList } = require('./scripts/index.js')
 
 //html内の要素取得とリスナーの設定
 document.querySelector("#execute").addEventListener('click', () => {

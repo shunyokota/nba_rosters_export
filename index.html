@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <!--    <meta http-equiv="Content-Security-Policy" content="script-src 'self'">-->
-    <script src="./vue.min.js"></script>
-    <link rel="stylesheet" href="bulma.min.css"/>
+    <script src="lib/vue.min.js"></script>
+    <link rel="stylesheet" href="lib/bulma.min.css"/>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
@@ -12,7 +17,7 @@
     <section class="hero">
         <div class="hero-body">
             <button id="execute" class="button is-primary">ファイル出力</button>
-            <main id="main">
+            <main id="main" v-cloak>
                 <div v-for="team in teams">
                     <label>
                         <input type="checkbox" v-model="selected_teams" :value="team.code"/>
@@ -23,6 +28,6 @@
         </div>
     </section>
 </div>
-<script src="./events.js"></script>
+<script src="scripts/events.js"></script>
 </body>
 </html>

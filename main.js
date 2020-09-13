@@ -12,6 +12,7 @@ app.on('ready', () => {
       nodeIntegration: true, // <--- flag
       worldSafeExecuteJavaScript: true,
       enableRemoteModule: true,
+      devTools: false,
       nodeIntegrationInWorker: true // <---  for web workers
     }
   });
