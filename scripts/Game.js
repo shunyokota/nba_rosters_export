@@ -1,5 +1,5 @@
 const axios = require('axios');
-const moment = require('moment');
+const moment = require('moment-timezone');
 class Game {
   constructor(data) {
     this.data = data
@@ -46,9 +46,12 @@ class Game {
     return (this.isWon() ? '○' : '●') + score
   }
 
+  dateTime() {
+    console.log(this.data.profile.dateTimeEt)
+    return moment.tz(this.data.profile.dateTimeEt, "America/New_York")
+  }
+
   onCourtRosterCodes() {
-    console.log(this.gameId())
-    console.log(this.snapshotData)
     const players = this.snapshotData.homeTeam.gamePlayers.concat(this.snapshotData.awayTeam.gamePlayers)
     return players.filter((player) => {
       return player.boxscore.onCourt == 'true'
@@ -57,6 +60,15 @@ class Game {
     })
   }
 
+
+  starterRosterCodes() {
+    const players = this.snapshotData.homeTeam.gamePlayers.concat(this.snapshotData.awayTeam.gamePlayers)
+    return players.filter((player) => {
+      return player.boxscore.isStarter == 'true'
+    }).map((player) => {
+      return player.profile.code
+    })
+  }
 }
 
 

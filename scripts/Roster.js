@@ -1,6 +1,6 @@
 const axios = require('axios');
 const _ = require('lodash');
-const moment = require('moment');
+const moment = require('moment-timezone');
 class Roster {
   constructor(code) {
     this.code = code
@@ -29,11 +29,15 @@ class Roster {
   }
 
   weight() {
-    return this.data.player.playerProfile.weight
+    return this.data.player.playerProfile.weight.replace(' kg', '')
   }
 
   dayOfBirth() {
     return moment.unix(this.data.player.playerProfile.dob / 1000)
+  }
+
+  age() {
+    return moment().diff(this.dayOfBirth(), 'years')
   }
 
   experienceYears() {
@@ -44,6 +48,12 @@ class Roster {
     return _.find(this.seasonGames, (game) => {
       return game.profile.gameId == gameId
     })
+  }
+
+  didParticipateInGames(gameIds) {
+    return gameIds
+      .filter((gameId) => { return this.gameInfo(gameId) != undefined })
+      .length > 0
   }
 
   mins(gameId) {

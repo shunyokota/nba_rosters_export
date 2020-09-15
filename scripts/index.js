@@ -1,7 +1,7 @@
 const axios = require('axios');
 const _ = require('lodash');
 const fs = require('fs')
-const moment = require('moment');
+const moment = require('moment-timezone');
 const TEAM_LIST_URL = 'https://jp.global.nba.com/stats2/league/conferenceteamlist.json?locale=ja';
 const ROSTERS_URL = 'https://jp.global.nba.com/stats2/team/roster.json?locale=ja&teamCode=:code'
 const SCHEDULE_URL = 'https://jp.global.nba.com/stats2/team/schedule.json?countryCode=JP&locale=ja&teamCode=:code'
@@ -77,7 +77,10 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
   //     return roster
   //   }
   // ))
-  rosters = _(rosters).sortBy((roster) => {
+  const gameIds = games.map((game) => { return game.gameId() })
+  rosters = _(rosters).filter((roster) => {
+    return roster.didParticipateInGames(gameIds)
+  }).sortBy((roster) => {
     const mins = roster.mins(games[0].gameId())
     return !mins ? 0 : roster.mins(games[0].gameId())
   }).reverse()
@@ -100,7 +103,8 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
   games.forEach((game, n) => {
     let row = worksheet.getRow(4)
     let col = 9 + 3 * n
-    row.getCell(col).value = game.displayScore()
+    row.getCell(col).value = game.dateTime().tz("Asia/Tokyo").format('MM/DD');
+    row.getCell(col + 1).value = game.displayScore()
     row.commit()
     row = worksheet.getRow(5)
     row.getCell(col).value = game.oppTeamName()
@@ -115,14 +119,14 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
     row.getCell(4).value = roster.position();
     row.getCell(5).value = roster.height();
     row.getCell(6).value = roster.weight();
-    row.getCell(7).value = roster.dayOfBirth().format('YYYY/MM/DD');
+    row.getCell(7).value = roster.age();
     row.getCell(8).value = roster.experienceYears();
     //各選手・試合ごとの情報
     games.forEach((game, n) => {
       let col = 9 + 3 * n
       //スコア
       let point = roster.points(game.gameId())
-      if (_.includes(game.onCourtRosterCodes(), roster.code)) {
+      if (_.includes(game.starterRosterCodes(), roster.code)) {
         point = '☆' + point
       }
       row.getCell(col).value = point
@@ -138,8 +142,8 @@ const main = async (teamCode1, teamCode2) => {
 
   await workbook.xlsx.readFile(path.join(__dirname, '../template.xlsx'))
     .then(async function () {
-      await writeToSheet(teamCode1, workbook.getWorksheet(1), workbook)
-      await writeToSheet(teamCode2, workbook.getWorksheet(2), workbook)
+      await writeToSheet(teamCode1, workbook.getWorksheet('Sheet1'), workbook)
+      await writeToSheet(teamCode2, workbook.getWorksheet('Sheet2'), workbook)
 
       const fileName = 'NBA_' + moment().format('YYYYMMDDHHmmss') + '.xlsx'
       const outputPath = path.join(app.getPath('desktop'), fileName)
