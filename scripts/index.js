@@ -91,18 +91,18 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
       buffer: fs.readFileSync(logImagePath),
       extension: 'png',
     });
-    worksheet.addImage(imageId, 'A1:B2');
+    worksheet.addImage(imageId, 'A1:A1');
   } catch {}
 
   //チーム名
   let row = worksheet.getRow(1)
-  row.getCell(3).value = games[0].teamName()
+  row.getCell(2).value = games[0].teamName()
   row.commit()
   //相手チーム
 
   games.forEach((game, n) => {
     let row = worksheet.getRow(4)
-    let col = 9 + 3 * n
+    let col = 8 + 3 * n
     row.getCell(col).value = game.dateTime().tz("Asia/Tokyo").format('MM/DD');
     row.getCell(col + 1).value = game.displayScore()
     row.commit()
@@ -114,8 +114,11 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
   let rowNum = ROSTER_START_ROW;
   rosters.forEach((roster, i) => {
     let row = worksheet.getRow(i + ROSTER_START_ROW);
-    row.getCell(2).value = roster.jerseyNo();
-    row.getCell(3).value = roster.displayName();
+    row.getCell(1).value = roster.jerseyNo();
+    row.getCell(2).value = roster.displayName();
+    if (9 <= roster.displayName().length) {
+      row.height = 34;
+    }
     row.getCell(4).value = roster.position();
     row.getCell(5).value = roster.height();
     row.getCell(6).value = roster.weight();
@@ -123,7 +126,7 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
     row.getCell(8).value = roster.experienceYears();
     //各選手・試合ごとの情報
     games.forEach((game, n) => {
-      let col = 9 + 3 * n
+      let col = 8 + 3 * n
       //スコア
       let point = roster.points(game.gameId())
       if (_.includes(game.starterRosterCodes(), roster.code)) {
