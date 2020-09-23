@@ -18,8 +18,6 @@
       "lib/*",
       "img/logo/*",
       "template.xlsx",
-      "dist/electron/**/*",
-      "dist/**/*",
       "package.json"
     ],
     "mac": {
@@ -36,8 +34,7 @@
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
-    "vue": "^2.6.12",
-    "xlsx": "^0.16.6"
+    "vue": "^2.6.12"
   },
   "devDependencies": {
     "electron": "^10.1.1",

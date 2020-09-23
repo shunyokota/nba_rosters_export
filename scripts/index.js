@@ -133,6 +133,9 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
         point = '☆' + point
       }
       row.getCell(col).value = point
+      if (point && 3 <= point.lenght) {
+        row.height = 34;
+      }
       row.getCell(col + 1).value = roster.threePa(game.gameId());
       row.getCell(col + 2).value = roster.threePm(game.gameId());
     })
