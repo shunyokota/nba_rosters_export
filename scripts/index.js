@@ -119,25 +119,39 @@ const writeToSheet = async (teamCode, worksheet, workbook) => {
     if (9 <= roster.displayName().length) {
       row.height = 34;
     }
-    row.getCell(4).value = roster.position();
-    row.getCell(5).value = roster.height();
-    row.getCell(6).value = roster.weight();
-    row.getCell(7).value = roster.age();
-    row.getCell(8).value = roster.experienceYears();
+    row.getCell(3).value = roster.position();
+    row.getCell(4).value = roster.height();
+    row.getCell(5).value = roster.weight();
+    row.getCell(6).value = roster.age();
+    row.getCell(7).value = roster.experienceYears();
     //各選手・試合ごとの情報
     games.forEach((game, n) => {
       let col = 8 + 3 * n
       //スコア
       let point = roster.points(game.gameId())
+      //row.getCell(col).value = (point == null) ? '' : point
+      point = (point == null) ? '' : point
       if (_.includes(game.starterRosterCodes(), roster.code)) {
-        point = '☆' + point
+        row.getCell(col).value = {
+          'richText': [
+            {'font': { underline: true, bold: true },'text': point},
+          ]
+        };
+        //row.getCell(col).font = { underline: 'single' }
+      } else {
+        row.getCell(col).value = {
+          'richText': [
+            {'font': { bold: true },'text': point},
+          ]
+        };
       }
-      row.getCell(col).value = point
-      if (point && 3 <= point.lenght) {
-        row.height = 34;
-      }
-      row.getCell(col + 1).value = roster.threePa(game.gameId());
-      row.getCell(col + 2).value = roster.threePm(game.gameId());
+      // else {
+      //   row.getCell(col).font = { underline: 'none' }
+      // }
+      // if (point && 3 <= point.lenght) {
+      // }
+      row.getCell(col + 1).value = roster.threePm(game.gameId());
+      row.getCell(col + 2).value = roster.threePa(game.gameId());
     })
     row.commit();
   })
